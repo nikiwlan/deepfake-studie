@@ -13,7 +13,7 @@ from streamlit_gsheets import GSheetsConnection
 # ==========================================================
 # ⚙️ KONFIGURATION
 # ==========================================================
-ANZAHL_VIDEOS = 5 
+ANZAHL_VIDEOS = 60
 DATA_FOLDER = "studien_daten"
 VIDEO_ROOT = "videos"  # Der Hauptordner
 
@@ -227,7 +227,7 @@ def save_result(video_name, wahl, korrektes_label):
 # ==========================================================
 viewing_css = """
 <style>
-    .block-container { max-width: 1200px !important; padding-top: 2rem; text-align: left !important; }
+    .block-container { max-width: 1200px !important; padding-top: 1rem; text-align: left !important; }
     video { width: 100% !important; max-width: 1600px; height: auto; border-radius: 10px; display: block; margin-left: 0; }
     h1 { margin-top: -10px; }
 </style>
@@ -243,7 +243,7 @@ voting_css = """
 """
 results_css = """
 <style>
-.block-container { max-width: 1600px !important; padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; padding-left: 2.2rem !important; padding-right: 2.2rem !important; text-align: left !important; }
+.block-container { max-width: 1600px !important; padding-top: 0rem !important; padding-bottom: 0rem !important; padding-left: 2.2rem !important; padding-right: 2.2rem !important; text-align: left !important; }
 div[data-testid="stVerticalBlock"] { gap: 0.6rem; }
 </style>
 """
@@ -272,7 +272,12 @@ start_slot = st.empty()
 def render_start():
     st.markdown(start_css, unsafe_allow_html=True)
     st.title("Willkommen zur Deepfake-Studie")
-    st.markdown("""<div class="start-desc">In dieser Studie siehst du kurze Videos. Einige sind <b>echt</b>, andere sind <b>Deepfakes</b>.</div><div class="start-gap"></div>""", unsafe_allow_html=True)
+    st.markdown("""
+<div class="start-desc">
+  In dieser Studie siehst du kurze Videos. Einige sind <b>echt</b>, andere sind <b>Deepfakes</b> – also mit <b>KI-Technologie manipulierte</b> Videos, bei denen das <b>Gesicht</b> einer Person <b> ausgetauscht</b> wurde.
+</div>
+<div class="start-gap"></div>
+""", unsafe_allow_html=True)
     st.markdown('<div class="start-info">', unsafe_allow_html=True)
     st.info(f"""
 **Deine Aufgabe:** Entscheide nach jedem Clip, ob das Video **echt** oder ein **Deepfake** ist.
@@ -365,7 +370,7 @@ if st.session_state.video_index < len(df):
             col_titel, col_hinweis = st.columns([1, 1])
             with col_titel:
                 st.title(f"Video {st.session_state.video_index + 1} von {len(df)}")
-                st.caption(f"Teilnehmer ID: {st.session_state.user_name} | Gruppe: {st.session_state.group_name}")
+                # st.caption(f"Teilnehmer ID: {st.session_state.user_name} | Gruppe: {st.session_state.group_name}")
             with col_hinweis:
                 st.markdown("<div style='padding-top: 25px;'></div>", unsafe_allow_html=True)
                 st.info("Das Video verschwindet automatisch nach 20 Sekunden.")
@@ -390,8 +395,7 @@ if st.session_state.video_index < len(df):
     elif st.session_state.phase == "voting":
         with content_placeholder.container():
             st.markdown(voting_css, unsafe_allow_html=True)
-            st.warning("Das Video ist nun weg. Was denkst du?")
-            wahl = st.radio("Ist dieses Video echt oder ein Deepfake?", ["Echt", "Deepfake"], index=None, key=f"entscheidung_{st.session_state.video_index}")
+            wahl = st.radio("Deine Einschätzung: ist das Video echt oder KI-manipuliert (Deepfake)", ["Echt", "Deepfake"], index=None, key=f"entscheidung_{st.session_state.video_index}")
 
         if wahl:
             with footer_placeholder.container():
@@ -439,7 +443,7 @@ else:
         roc_auc = auc(fpr, tpr)
 
     cm = confusion_matrix(y_true, y_pred, labels=[0, 1])
-    left, right = st.columns([1.0, 1.35], gap="large")
+    left, right = st.columns([0.8, 1.25], gap="large")
 
     with left:
         st.subheader("Deine Statistik")
