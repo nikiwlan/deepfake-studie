@@ -492,7 +492,6 @@ else:
                 
         except Exception as e:
             st.error(f"Fehler beim Cloud-Upload: {e}")
-            st.info("Keine Sorge, die Daten sind lokal gesichert.")   
 
     # Forscher-Zusammenfassung
     summary_file = os.path.join(DATA_FOLDER, f"summary_{st.session_state.user_name}_{datetime.now().strftime('%Y%m%d_%H%M')}.csv")
