@@ -1,0 +1,6 @@
+streamlit
+pandas
+scikit-learn
+matplotlib
+streamlit-gsheets
+st-gsheets-connection
